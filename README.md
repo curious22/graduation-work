@@ -11,3 +11,7 @@ http localhost:8000/status?completed
 http localhost:8000/status?skipped
 http localhost:8000/status?fkejfekwljf
 ```
+
+```
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev python3-dev
+```
