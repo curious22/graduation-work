@@ -14,7 +14,7 @@ class AddUaUrls(scrapy.Spider):
     def __init__(self):
         super(AddUaUrls, self).__init__(name=self.name)
         self.redis_client = Redis()
-        self.queue = 'addua_processing:start_urls'
+        self.queue = 'addua_items:start_urls'
 
     def parse(self, response):
         print(

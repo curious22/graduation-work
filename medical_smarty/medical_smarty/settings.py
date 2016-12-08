@@ -121,7 +121,8 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Store scraped item in redis for post-processing.
 ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
+    'scrapy_redis.pipelines.RedisPipeline': 300,
+    'medical_smarty.pipelines.MongoDBPipeline': 400,
 }
 
 # The item pipeline serializes and stores the items in this redis key.
@@ -154,3 +155,8 @@ REDIS_PORT = 6379
 
 # Default start urls key for RedisSpider and RedisCrawlSpider.
 # REDIS_START_URLS_KEY = '%(name)s:start_urls'
+
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "medical_db"
+MONGODB_COLLECTION = "medicine"
