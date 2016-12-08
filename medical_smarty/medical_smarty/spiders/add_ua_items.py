@@ -7,6 +7,14 @@ class AddUaItems(RedisSpider):
     name = 'addua_items'
     # redis_key = 'addua_items:start_urls'
 
+    def make_request_from_data(self, data):
+        # By default, data is an URL.
+        data = data.decode()
+        if '://' in data:
+            return self.make_requests_from_url(data)
+        else:
+            self.logger.error("Unexpected URL from '%s': %r", self.redis_key, data)
+
     def parse(self, response):
         print(
             BColors.OKBLUE +
