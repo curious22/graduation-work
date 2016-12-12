@@ -3,15 +3,15 @@ from bson.json_util import dumps
 from search.base import MongoDBConnect, QueryMixin
 
 
-class Search(MongoDBConnect,
+class Filter(MongoDBConnect,
              QueryMixin):
     """
     Implementing search in DB by criteria
-    endpoint: /search
+    endpoint: /filter
     """
 
     def __init__(self):
-        super(Search, self).__init__()
+        super(Filter, self).__init__()
 
     def on_get(self, req, resp):
 
