@@ -29,7 +29,7 @@ class MongoDBPipeline(object):
             self.collection.insert(dict(item))
             print(
                 BColors.UNDERLINE +
-                "Record {} added to processing_status_urls collection".format(item['url']) +
+                "Medicine {} was added into DB".format(item['title']) +
                 BColors.ENDC
             )
         return item

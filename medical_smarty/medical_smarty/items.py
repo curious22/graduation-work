@@ -12,3 +12,7 @@ class MedicineItem(scrapy.Item):
     currency = scrapy.Field()
     image_url = scrapy.Field()
     brand = scrapy.Field()
+    availability = scrapy.Field()
+    tags = scrapy.Field()
+    source = scrapy.Field()
+    category = scrapy.Field()
