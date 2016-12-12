@@ -29,6 +29,9 @@ class QueryMixin(object):
         for criterion in query:
             key, value = criterion.split('=')
             if key not in ['page', 'limit']:
+                if value in ['true', 'false']:
+                    value = True if value == 'true' else False
+
                 data.append(
                     {
                         key: value
@@ -47,6 +50,18 @@ class QueryMixin(object):
             'count': len(result),
             'results': result,
             'page': kwargs.get('page'),
+            'pages': kwargs.get('pages'),
         }
 
         return data
+
+    def get_count_pages(self, *args, **kwargs):
+        conditions = kwargs.get('conditions')
+        limit = kwargs.get('limit')
+
+        if conditions:
+            pages = self.collection.find({'$and': conditions}).count() // limit
+        else:
+            pages = self.collection.find().count() // limit
+
+        return pages
