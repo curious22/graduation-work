@@ -1,5 +1,5 @@
 import falcon
-from search.filter import Filter
+from api import search
 
 api = application = falcon.API()
-api.add_route('/api/filter', Filter())
+api.add_route('/api/search', search.Search())

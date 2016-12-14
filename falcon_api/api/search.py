@@ -1,17 +1,16 @@
 import falcon
 from bson.json_util import dumps
-from search.base import MongoDBConnect, QueryMixin
+from api.base import MongoDBConnect, QueryMixin
 
 
-class Filter(MongoDBConnect,
-             QueryMixin):
+class Search(MongoDBConnect, QueryMixin):
     """
     Implementing search in DB by criteria
-    endpoint: /filter
+    endpoint: /api/search/
     """
 
     def __init__(self):
-        super(Filter, self).__init__()
+        super(Search, self).__init__()
 
     def on_get(self, req, resp):
 
@@ -23,9 +22,6 @@ class Filter(MongoDBConnect,
 
             page = int(page_value) if page_value else 0
             limit = int(limit_value )if limit_value else 20
-
-            import pprint
-            pprint.pprint(conditions)
 
             if conditions:
                 data = self.result_generating(
