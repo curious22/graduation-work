@@ -1,5 +1,6 @@
 import pymongo
 import settings
+from urllib.parse import unquote
 
 
 class MongoDBConnect(object):
@@ -28,9 +29,24 @@ class QueryMixin(object):
 
         for criterion in query:
             key, value = criterion.split('=')
+
+            #  'page' and 'limit' don't participate in the query
             if key not in ['page', 'limit']:
                 if value in ['true', 'false']:
                     value = True if value == 'true' else False
+
+                # title looking in tags
+                if key == 'title':
+                    list_ = unquote(value).lower().split()
+
+                    for word in list_:
+                        data.append(
+                            {
+                                'tags': word
+                            }
+                        )
+                    else:
+                        continue
 
                 data.append(
                     {

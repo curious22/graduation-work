@@ -24,6 +24,9 @@ class Filter(MongoDBConnect,
             page = int(page_value) if page_value else 0
             limit = int(limit_value )if limit_value else 20
 
+            import pprint
+            pprint.pprint(conditions)
+
             if conditions:
                 data = self.result_generating(
                     self.collection.find({'$and': conditions})
