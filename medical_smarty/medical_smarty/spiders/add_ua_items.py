@@ -23,10 +23,21 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
     @staticmethod
     def get_metadata_html(response):
         """Obtaining metadata from response HTML page"""
+        price_data = []
+
         metadata = {
             'title': response.xpath(
                 '//meta[@property="og:title"]/@content'
             ).extract_first(),
+
+            'image_url': response.xpath(
+                '//meta[@property="og:image"]/@content'
+            ).extract_first(),
+
+            'source': 'add.ua'
+        }
+
+        price_data_dict = {
             'url': response.url,
             'price': float(
                 response.xpath(
@@ -36,21 +47,17 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
             'currency': response.xpath(
                 '//meta[@property="product:price:currency"]/@content'
             ).extract_first(),
-            'image_url': response.xpath(
-                '//meta[@property="og:image"]/@content'
-            ).extract_first(),
             'brand': response.xpath(
                 '//meta[@property="og:brand"]/@content'
             ).extract_first(),
-            'source': 'add.ua'
         }
 
         if response.xpath('//p[@class="availability in-stock"]'):
-            metadata['availability'] = True
+            price_data_dict['availability'] = True
         elif response.xpath(
                 '//p[contains(@class, "availability out-of-stock")]'
         ):
-            metadata['availability'] = False
+            price_data_dict['availability'] = False
 
         # tag generation
         metadata['tags'] = metadata['title'].lower().split()
@@ -60,5 +67,8 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
             '//div[@class="breadcrumbs"]/ul/a/span/text()'
         ).extract()[-1]
         metadata['category'] = category.strip()
+
+        price_data.append(price_data_dict)
+        metadata['price_data'] = price_data
 
         return metadata

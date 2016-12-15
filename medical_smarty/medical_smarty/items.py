@@ -16,3 +16,4 @@ class MedicineItem(scrapy.Item):
     tags = scrapy.Field()
     source = scrapy.Field()
     category = scrapy.Field()
+    price_data = scrapy.Field()
