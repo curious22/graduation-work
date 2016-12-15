@@ -1,18 +1,25 @@
-import pymongo
-import settings
 from urllib.parse import unquote
+import pymongo
+from pymongo.errors import ServerSelectionTimeoutError
+import settings
 
 
 class MongoDBConnect(object):
     """Implementing a connecting to MongoDB collection"""
 
     def __init__(self):
-        client = pymongo.MongoClient(
-            settings.MONGODB_SERVER,
-            settings.MONGODB_PORT
-        )
-        db = client[settings.MONGODB_DB]
-        self.collection = db[settings.MONGODB_COLLECTION]
+        try:
+            client = pymongo.MongoClient(
+                settings.MONGODB_SERVER,
+                settings.MONGODB_PORT,
+                serverSelectionTimeoutMS=1
+            )
+            client.server_info()
+        except ServerSelectionTimeoutError as error:
+            print(error)
+        else:
+            db = client[settings.MONGODB_DB]
+            self.collection = db[settings.MONGODB_COLLECTION]
 
 
 class QueryMixin(object):

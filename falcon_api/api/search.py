@@ -14,6 +14,11 @@ class Search(MongoDBConnect, QueryMixin):
 
     def on_get(self, req, resp):
 
+        if not hasattr(self, 'collection'):
+            resp.body = "Connection to DB doesn't exist"
+            resp.status = falcon.HTTP_500
+            return
+
         query = req.query_string
         if query:
             conditions, addition = self.query_generation(query)
