@@ -4,6 +4,7 @@ import pymongo
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
 from core.helpers import BColors
+from bson.objectid import ObjectId
 
 
 class MongoDBPipeline(object):
@@ -90,3 +91,26 @@ class MongoDBPipeline(object):
             return True
 
         return False
+
+    def update_item(self, id_, new_price_data):
+        """
+        Updating the field `price_data` of the product
+        :param id_: 5857db9b4ad1522dcb9dc76b
+        :param new_price_data: list with new data
+        :return:
+        """
+        self.collection.update(
+            {
+                "_id": ObjectId(id_),
+            },
+            {
+                "$set":
+                    {
+                        "price_data": new_price_data
+                    }
+            }
+        )
+
+    @staticmethod
+    def get_price_data(item):
+        return item['price_data']
