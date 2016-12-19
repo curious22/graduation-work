@@ -1,7 +1,5 @@
-from datetime import datetime
-
 from scrapy_redis.spiders import RedisSpider
-from core.helpers import BColors
+from core.helpers import print_current_time
 from core.mixins import Py3RedisSpider
 from medical_smarty.items import MedicineItem
 
@@ -10,12 +8,7 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
     name = 'addua_items'
 
     def parse(self, response):
-        current_time = datetime.now().strftime('%H:%M:%S %d-%m-%y')
-        print(
-            BColors.OKBLUE +
-            '{} Processing record at {}'.format(current_time, response.url) +
-            BColors.ENDC
-        )
+        print_current_time(response)
 
         metadata = self.get_metadata_html(response)
         yield MedicineItem(**metadata)
@@ -50,6 +43,7 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
             'brand': response.xpath(
                 '//meta[@property="og:brand"]/@content'
             ).extract_first(),
+            'resource': 'add.ua'
         }
 
         if response.xpath('//p[@class="availability in-stock"]'):

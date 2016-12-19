@@ -26,10 +26,67 @@ class MongoDBPipeline(object):
                 valid = False
                 raise DropItem("Missing {0}!".format(data))
         if valid:
-            self.collection.insert(dict(item))
-            print(
-                BColors.UNDERLINE +
-                "Medicine {} was added into DB".format(item['title']) +
-                BColors.ENDC
-            )
+            response = self.get_item_by_tags(item)
+            resp_list = list(response)
+
+            if resp_list:
+                print(len(resp_list))
+
+                # if items have similar resources - skip
+                if self.is_similar_resource(item, resp_list[0]):
+                    print(
+                        BColors.WARNING +
+                        'Skip the similar items' +
+                        BColors.ENDC
+                    )
+            else:
+                self.collection.insert(dict(item))
+                print(
+                    BColors.UNDERLINE +
+                    "Medicine {} was added into DB".format(item['title']) +
+                    BColors.ENDC
+                )
         return item
+
+    @staticmethod
+    def get_query_from_tags(tags):
+        """
+
+        :param tags: ["гофен", "400", "мг", "капсулы", "№100"]
+        :return:
+        [
+            {'tags': {'$regex': 'гофен'}},
+            {'tags': {'$regex': '400'}},
+            {'tags': {'$regex': 'мг'}},
+            {'tags': {'$regex': 'капсулы'}},
+            {'tags': {'$regex': '№100'}}
+        ]
+        """
+        query = list()
+
+        for tag in tags:
+            query.append(
+                {
+                    'tags': {
+                            '$regex': tag
+                    }
+                }
+            )
+
+        return query
+
+    def get_item_by_tags(self, item):
+        """Generate query by tags and sending the request into DB"""
+        tags_list = self.get_query_from_tags(item['tags'])
+        return self.collection.find({'$and': tags_list})
+
+    @staticmethod
+    def is_similar_resource(old_item, new_item):
+        """Check entry current resource of item in present prices"""
+        old_sources = [
+            i['resource'] for i in old_item['price_data']
+        ]
+        if new_item['source'] in old_sources:
+            return True
+
+        return False
