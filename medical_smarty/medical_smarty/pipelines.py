@@ -40,6 +40,18 @@ class MongoDBPipeline(object):
                         'Skip the similar items' +
                         BColors.ENDC
                     )
+                else:
+                    id_ = resp_list[0]['_id']
+                    price_data = self.preparing_new_price_data(
+                        item,
+                        resp_list[0]
+                    )
+                    self.update_item(id_, price_data)
+                    print(
+                        BColors.OKGREEN +
+                        'Item {} was updated'.format(item['title']) +
+                        BColors.ENDC
+                    )
             else:
                 self.collection.insert(dict(item))
                 print(
@@ -101,7 +113,7 @@ class MongoDBPipeline(object):
         """
         self.collection.update(
             {
-                "_id": ObjectId(id_),
+                "_id": id_,
             },
             {
                 "$set":
@@ -114,3 +126,13 @@ class MongoDBPipeline(object):
     @staticmethod
     def get_price_data(item):
         return item['price_data']
+
+    def preparing_new_price_data(self, new_item, old_item):
+        """Creating new `price_data` by combining"""
+
+        price_data = self.get_price_data(old_item)
+        new_price_data = self.get_price_data(new_item)
+
+        price_data.append(new_price_data[0])
+
+        return price_data
