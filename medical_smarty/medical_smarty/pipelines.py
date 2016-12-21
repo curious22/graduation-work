@@ -31,10 +31,9 @@ class MongoDBPipeline(object):
             resp_list = list(response)
 
             if resp_list:
-                print(len(resp_list))
 
                 # if items have similar resources - skip
-                if self.is_similar_resource(item, resp_list[0]):
+                if self.is_similar_resource(resp_list[0], item):
                     print(
                         BColors.WARNING +
                         'Skip the similar items' +

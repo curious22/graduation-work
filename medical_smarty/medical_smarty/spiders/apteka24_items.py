@@ -1,6 +1,7 @@
 import scrapy
 from urllib.parse import urljoin
 from core.helpers import print_current_time, correct_wrong_designation
+from medical_smarty.items import MedicineItem
 
 
 class Apteka24Items(scrapy.Spider):
@@ -15,9 +16,8 @@ class Apteka24Items(scrapy.Spider):
         print_current_time(response)
 
         metadata = self.get_metadata_html(response)
-        from pprint import pprint
-        pprint(metadata)
-        return
+
+        return MedicineItem(**metadata)
 
     def get_metadata_html(self, response):
         """Obtaining metadata from response HTML page"""
@@ -41,8 +41,31 @@ class Apteka24Items(scrapy.Spider):
         price_data_dict = dict(
             url=response.url,
             resource='apteka24.ua',
-
+            price=float(response.xpath(
+                '//div[@class="price"]/@content'
+            ).extract_first()),
+            currency=response.xpath(
+                '//meta[@itemprop="priceCurrency"]/@content'
+            ).extract_first(),
+            barnd=response.xpath(
+                '//li[./span[@class="icon manufacture"]]'
+                '/span[@class="count"]/text()'
+            ).extract_first(),
         )
+
+        availability = response.xpath(
+            '//link[@itemprop="availability"]/@href'
+        ).extract_first()
+
+        if 'InStock' in availability:
+            price_data_dict['availability'] = True
+        else:
+            price_data_dict['availability'] = False
+
+        category = response.xpath(
+            '//div[@class="breadcrumbs wrapper"]//span/text()'
+        ).extract()
+        metadata['category'] = category[1]
 
         price_data.append(price_data_dict)
         metadata['price_data'] = price_data
