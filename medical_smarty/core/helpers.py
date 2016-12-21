@@ -1,4 +1,9 @@
+import re
 from datetime import datetime
+
+n_pattern = re.compile(r'^n\d+')  # n60 == N60
+mg_pattern = re.compile(r'\d+мг')  # 150мг
+g_pattern = re.compile(r'\d+г')  # 150мг
 
 class BColors:
     HEADER = '\033[95m'
@@ -18,3 +23,17 @@ def print_current_time(response):
         '{} Processing record at {}'.format(current_time, response.url) +
         BColors.ENDC
     )
+
+
+def correct_wrong_designation(item):
+    if n_pattern.search(item):
+        return item.replace('n', '№')
+
+    if mg_pattern.search(item):
+        return item.replace('мг', ' мг').split()
+
+    if g_pattern.search(item):
+        return item.replace('г', ' г').split()
+
+    return False
+
