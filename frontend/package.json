@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/curious22/graduation-work/issues"
   },
-  "homepage": "https://github.com/curious22/graduation-work#readme"
+  "homepage": "https://github.com/curious22/graduation-work#readme",
+  "devDependencies": {
+    "angular": "^1.6.0",
+    "gulp": "^3.9.1"
+  }
 }
