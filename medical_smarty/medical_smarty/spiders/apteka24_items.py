@@ -1,16 +1,12 @@
-import scrapy
+from scrapy_redis.spiders import RedisSpider
+from core.mixins import Py3RedisSpider
 from urllib.parse import urljoin
 from core.helpers import print_current_time, correct_wrong_designation
 from medical_smarty.items import MedicineItem
 
 
-class Apteka24Items(scrapy.Spider):
+class Apteka24Items(Py3RedisSpider, RedisSpider):
     name = 'apteka24_items'
-
-    start_urls = [
-        'http://www.apteka24.ua/gofen-200-kaps-myag-200mg-n60-10kh6-/',
-        'http://www.apteka24.ua/metformin-sandoz-tabletki-500mg-n120/',
-    ]
 
     def parse(self, response):
         print_current_time(response)
