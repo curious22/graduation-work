@@ -88,3 +88,27 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+
+#  ---- Ignore list for Front-end
+bower_components
+node_modules
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Other #
+#########
+.idea
+.tmp
+/dist
+0-tmp
+filelist.txt
