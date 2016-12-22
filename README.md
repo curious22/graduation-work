@@ -11,6 +11,12 @@
 sudo apt-get install build-essential libssl-dev libffi-dev python-dev python3-dev
 ```
 
+### Run tests
+
+Activate the virtualenv
+
+Run command: `pytest -v`
+
 ### Run from virtual environment
 
 Navigate into `falcon_api/`
