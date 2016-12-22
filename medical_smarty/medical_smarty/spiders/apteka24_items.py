@@ -1,7 +1,7 @@
 from scrapy_redis.spiders import RedisSpider
 from core.mixins import Py3RedisSpider
 from urllib.parse import urljoin
-from core.helpers import print_current_time, correct_wrong_designation
+from core.helpers import print_current_time, get_correct_tags
 from medical_smarty.items import MedicineItem
 
 
@@ -69,22 +69,14 @@ class Apteka24Items(Py3RedisSpider, RedisSpider):
         return metadata
 
     @staticmethod
-    def custom_title_splitter(list_):
+    def custom_title_splitter(tags):
         new_list = list()
 
-        for word in list_:
-            item = correct_wrong_designation(word)
+        for tag in tags:
+            new_tags_list = get_correct_tags(tag)
 
-            if item and isinstance(item, list):
-                for i in item:
-                    new_list.append(i)
-                continue
-
-            if item:
-                new_list.append(item)
-                continue
-
-            new_list.append(word)
+            for i in new_tags_list:
+                new_list.append(i)
 
         return new_list
 

@@ -4,7 +4,6 @@ import pymongo
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
 from core.helpers import BColors
-from bson.objectid import ObjectId
 
 
 class MongoDBPipeline(object):
@@ -63,7 +62,6 @@ class MongoDBPipeline(object):
     @staticmethod
     def get_query_from_tags(tags):
         """
-
         :param tags: ["гофен", "400", "мг", "капсулы", "№100"]
         :return:
         [

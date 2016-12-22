@@ -25,9 +25,9 @@ def print_current_time(response):
     )
 
 
-def correct_wrong_designation(item):
+def get_correct_tags(item):
     if n_pattern.search(item):
-        return item.replace('n', '№')
+        return item.replace('n', '№').split()
 
     if mg_pattern.search(item):
         return item.replace('мг', ' мг').split()
@@ -35,5 +35,5 @@ def correct_wrong_designation(item):
     if g_pattern.search(item):
         return item.replace('г', ' г').split()
 
-    return False
+    return item.split()
 
