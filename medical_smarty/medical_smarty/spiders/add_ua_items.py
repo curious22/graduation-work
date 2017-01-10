@@ -1,5 +1,5 @@
 from scrapy_redis.spiders import RedisSpider
-from core.helpers import print_current_time
+from core.helpers import print_current_time, get_current_datetime
 from core.mixins import Py3RedisSpider
 from medical_smarty.items import MedicineItem
 
@@ -40,10 +40,11 @@ class AddUaItems(Py3RedisSpider, RedisSpider):
             'currency': response.xpath(
                 '//meta[@property="product:price:currency"]/@content'
             ).extract_first(),
-            'brand': response.xpath(
+            'manufacturer': response.xpath(
                 '//meta[@property="og:brand"]/@content'
             ).extract_first(),
-            'resource': 'add.ua'
+            'resource': 'add.ua',
+            'updating_date': get_current_datetime()
         }
 
         if response.xpath('//p[@class="availability in-stock"]'):

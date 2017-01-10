@@ -25,6 +25,10 @@ def print_current_time(response):
     )
 
 
+def get_current_datetime():
+    return datetime.now().strftime('%H:%M:%S %d-%m-%y')
+
+
 def get_correct_tags(item):
     if n_pattern.search(item):
         return item.replace('n', '№').split()
