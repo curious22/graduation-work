@@ -43,7 +43,7 @@ class Apteka24Items(Py3RedisSpider, RedisSpider):
             currency=response.xpath(
                 '//meta[@itemprop="priceCurrency"]/@content'
             ).extract_first(),
-            barnd=response.xpath(
+            manufacturer=response.xpath(
                 '//li[./span[@class="icon manufacture"]]'
                 '/span[@class="count"]/text()'
             ).extract_first(),
