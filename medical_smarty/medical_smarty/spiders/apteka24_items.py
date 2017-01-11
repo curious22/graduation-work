@@ -1,7 +1,8 @@
 from scrapy_redis.spiders import RedisSpider
 from core.mixins import Py3RedisSpider
 from urllib.parse import urljoin
-from core.helpers import print_current_time, get_correct_tags
+from core.helpers import print_current_time, get_correct_tags, \
+    get_current_datetime
 from medical_smarty.items import MedicineItem
 
 
@@ -47,6 +48,7 @@ class Apteka24Items(Py3RedisSpider, RedisSpider):
                 '//li[./span[@class="icon manufacture"]]'
                 '/span[@class="count"]/text()'
             ).extract_first(),
+            updating_date=get_current_datetime()
         )
 
         availability = response.xpath(
