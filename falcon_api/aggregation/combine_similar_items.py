@@ -106,13 +106,13 @@ for page in range(1, (raw_count // limit)):
 
             print_item_info(item)
             print_item_info(coincidence_item)
+            pprint.pprint(new_item)
 
             aggregated_collection.insert(new_item)
 
             set_of_coincidence.add(item['_id'])
             set_of_coincidence.add(coincidence_item['_id'])
 
-print(len(set_of_coincidence))
 
 # processing other goods
 raw_count = raw_collection.find().count()
@@ -124,5 +124,11 @@ for page in range(1, (raw_count // limit)):
         if item['_id'] not in set_of_coincidence:
             item.pop('_id')
             item.pop('source')
+            pprint.pprint(item)
 
             aggregated_collection.insert(item)
+
+
+print('Report')
+print('Quantity of coincidence: {}'.format(len(set_of_coincidence)))
+print('Common quantity: {}'.format(aggregated_collection.find().count()))
