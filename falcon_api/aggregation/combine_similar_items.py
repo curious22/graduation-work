@@ -1,16 +1,16 @@
 import pymongo
-import settings
+from decouple import config
 import pprint
 
 
 connection = pymongo.MongoClient(
-    settings.MONGODB_SERVER,
-    settings.MONGODB_PORT
+    config('MONGODB_SERVER'),
+    config('MONGODB_PORT', cast=int)
 )
 
-db = connection[settings.MONGODB_DB]
-raw_collection = db[settings.MONGODB_RAW_DATA]
-aggregated_collection = db[settings.MONGODB_COLLECTION]
+db = connection[config('MONGODB_DB')]
+raw_collection = db[config('MONGODB_RAW_DATA')]
+aggregated_collection = db[config('MONGODB_COLLECTION')]
 limit = 20
 set_of_coincidence = set()
 
@@ -87,7 +87,7 @@ def create_new_item(item_one, item_two):
         'title': item_one['title'],
         'category': item_one['category'],
         'image_url': image_url,
-        'tags': item['tags'],
+        'tags': item_one['tags'],
         'price_data': price_data
     }
 
