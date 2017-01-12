@@ -1,16 +1,15 @@
 import pymongo
-from decouple import config
 import pprint
 
 
 connection = pymongo.MongoClient(
-    config('MONGODB_SERVER'),
-    config('MONGODB_PORT', cast=int)
+    'localhost',
+    27017
 )
 
-db = connection[config('MONGODB_DB')]
-raw_collection = db[config('MONGODB_RAW_DATA')]
-aggregated_collection = db[config('MONGODB_COLLECTION')]
+db = connection['medical_db']
+raw_collection = db['raw_data']
+aggregated_collection = db['medicine']
 limit = 20
 set_of_coincidence = set()
 
