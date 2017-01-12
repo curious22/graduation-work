@@ -1,6 +1,7 @@
 import pymongo
-from falcon_api import settings
+import settings
 import pprint
+
 
 connection = pymongo.MongoClient(
     settings.MONGODB_SERVER,
