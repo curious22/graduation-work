@@ -55,6 +55,22 @@ class QueryMixin(object):
                     else:
                         continue
 
+                # title looking by regex
+                if key == 'category':
+                    list_ = unquote(value).lower().split()
+
+                    for word in list_:
+                        data.append(
+                            {
+                                'category': {
+                                    '$regex': word,
+                                    '$options': 'i'
+                                }
+                            }
+                        )
+                    else:
+                        continue
+
                 data.append(
                     {
                         key: value
